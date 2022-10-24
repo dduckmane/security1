@@ -1,0 +1,54 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
+    username: cos
+    password: cos1234
+
+#  mvc:
+#    view:
+#      prefix: /templates/
+#      suffix: .mustache
+
+  jpa:
+    hibernate:
+      ddl-auto: update #create update none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 20753470731-a409mgu4ukce2h7ps41vnlbi0dhog4nl.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+          facebook:
+            client-id: 5529594730443349
+            client-secret: 9516b25f796b9ac4a63117f6b3b98f69
+            scope:
+              - email
+              - public_profile
+
+
+
+logging.level: #띄어쓰기 없음
+  org.hibernate.SQL: debug #띄어쓰기 2칸
+
+
+
