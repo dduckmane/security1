@@ -4,6 +4,7 @@ package com.cos.security1.config.oauth;
 import com.cos.security1.config.auth.PrincipalDetails;
 import com.cos.security1.config.provider.FaceBookUserInfo;
 import com.cos.security1.config.provider.GoogleUserInfo;
+import com.cos.security1.config.provider.NaverUserInfo;
 import com.cos.security1.config.provider.Oauth2UserInfo;
 import com.cos.security1.model.User;
 import com.cos.security1.repository.UserRepository;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 
@@ -30,8 +32,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     @Override
     //이 메서드를 사용하면 userRequest매개변수에 사용자 정보와 엑세스토큰이 들어온다ㅏ.
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-//        log.info("getClientRegistration="+userRequest.getClientRegistration());
-//        log.info("getAccessToken="+userRequest.getAccessToken().getTokenValue());
+        log.info("getClientRegistration="+userRequest.getClientRegistration());
+        log.info("getAccessToken="+userRequest.getAccessToken().getTokenValue());
         OAuth2User oAuth2User = super.loadUser(userRequest);
         log.info("getAttributes="+oAuth2User.getAttributes());
         Oauth2UserInfo oauth2UserInfo=null;
@@ -41,8 +43,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
             log.info("페이스북 로그인 요청");
             oauth2UserInfo=new FaceBookUserInfo(oAuth2User.getAttributes());
+        }else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+            log.info("네이버 로그인 요청");
+            oauth2UserInfo=new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
         }else {
-            log.info("우리는 구글과 페이스북만 지원해요");
+            log.info("우리는 구글과 네이버와 페이스북만 지원해요");
         }
 
 
